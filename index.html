@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <link rel="icon" href="/res/icon.png">
+  <title>小鱼推书</title>
+<style>
+#app{
+  background-color: #ccd4db;
+  font-family: PingFangSC-Regular,HelveticaNeue-Light,'Helvetica Neue Light','Microsoft YaHei',sans-serif;
+  font-size: 0.35rem;
+  width: 100vw;
+  min-height: 100vh;
+  letter-spacing:0.03rem;
+  display: flex; justify-content: center; align-items: center ;
+}
+.down_page{
+  background-color: white;
+  min-height: 100vh; 
+  width: 10rem;
+  display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+}
+.icon{
+  width: 4rem;
+}
+.msg{
+  margin-top: 1rem;
+  color: #1ea0e3;
+  font-weight: bold;
+  font-size: 0.5rem;
+}
+.word_box{
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  display: flex; justify-content: center; align-items: center;
+}
+.label{
+  color: #1ea0e3;
+  font-size: 0.4rem;
+}
+.dot{
+  width: 0.15rem; height: 0.15rem; border-radius: 0.15rem;
+  background-color: #1ea0e3;
+  margin: 0.3rem;
+}
+.btns{
+  width: 10rem;
+  margin-top: 2rem;
+  display: flex; justify-content: center; align-items: center; 
+}
+.code_box{
+  margin: 0.6rem;
+  display: flex; justify-content: center; align-items: center; flex-direction: column;
+}
+.apk_down_img{
+  width: 2.3rem;
+  margin-bottom: 0.1rem;
+}
+.btn{
+  display: flex; justify-content: center; align-items: center;
+  width: 2.3rem;
+  height: 0.7rem;
+  border-radius: 1rem;
+  border: 1px solid #00aeef;
+  color: #00aeef;
+  font-size: 0.4rem;
+}
+</style>
+<script>
+function down_apk(){window.open('http://42.193.117.229/img/fish_novel.apk')}
+function open_web(){window.open('http://42.193.117.229/')}
+function init_rem() {
+  var doc = window.document
+  var docEl = doc.documentElement
+  var radio = 0.6  // 希望保持的竖屏宽高比
+  function wrap_event(event, wait){
+    function refreshRem() {
+      let width = document.documentElement.clientWidth ||document.body.clientWidth
+      let height = document.documentElement.clientHeight || document.body.clientHeight
+      var rem
+      // 宽度除以10 而不是除以100，是因为浏览器的fontsize有最小值，如果设置比最小值还小的值则不会生效
+      // 所以为了兼容小屏幕手机，只除以10，这样fontsize比除以100大了10倍，不会产生最小值问题
+      if (height * radio < width){
+        rem = height * radio / 10
+      }else{
+        rem = width / 10
+      }
+      let old = parseFloat(docEl.style.fontSize)
+      if (rem && (isNaN(old) || Math.abs(rem - old ) > 0.00001)){
+        docEl.style.fontSize = rem + 'px'
+      }
+    }
+    return ()=>{setTimeout(refreshRem, wait)}
+  }
+  //添加resize监听事件，当window宽高发生变化时会及时更新rem值
+  window.addEventListener('resize', wrap_event('resize', 300), false)
+  //pageshow事件由前进/后退按钮以及load事件触发后引起
+  window.addEventListener('pageshow', wrap_event('pageshow', 500), false)
+  //DOMContentLoaded事件是当document被完整的解析和读取后触发
+  document.addEventListener('DOMContentLoaded', wrap_event('DOMContentLoaded', 300), false) 
+}
+init_rem()
+</script>
+</head>
+<body>
+  <div id="app">
+    <div class="down_page">
+      <div class="msg">解决老白读者的书荒难题</div>
+      <div class="word_box">
+        <div class="label">个性化推荐</div>
+        <div class="dot"></div>
+        <div class="label">全平台搜索</div>
+      </div>
+      <img class="icon" src="/res/icon_has_name.png" alt="icon">
+      <div class="btns">
+        <div class="code_box">
+          <img class="apk_down_img" src="/res/apk_down_code.png" alt="二维码">
+          <div class="btn" onclick="down_apk()">安卓版</div>
+        </div>
+        <div class="code_box">
+          <img class="apk_down_img" src="/res/web_url_code.png" alt="二维码">
+          <div class="btn" onclick="open_web()">网页版</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
